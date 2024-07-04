@@ -69,15 +69,17 @@ def generate_m3u(from_file, dest_name, other=''):
 
     for cate_name in cate_list.keys():
         for tv_name in cate_list[cate_name]:
-            if tv_name not in tv_list and "{}高清".format(tv_name) not in tv_list:
-                print("无此节目: {}".format(tv_name))
-                continue
-            if tv_name in tv_list:
-                url = tv_list.pop(tv_name)
-                dest.write(m3u_item_format.format(other, tv_name, cate_name, tv_name, url))
             if "{}高清".format(tv_name) in tv_list:
                 url = tv_list.pop("{}高清".format(tv_name))
                 dest.write(m3u_item_format.format(other, tv_name, cate_name, "{}高清".format(tv_name), url))
+            elif tv_name in tv_list:
+                url = tv_list.pop(tv_name)
+                dest.write(m3u_item_format.format(other, tv_name, cate_name, tv_name, url))
+            else :
+                print("无此节目: {}".format(tv_name))
+
+            tv_list.pop("{}高清".format(tv_name), None)
+            tv_list.pop(tv_name, None)
 
     for tv_name in tv_list.keys():
         print(tv_name)
